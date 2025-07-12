@@ -1,0 +1,17 @@
+ #include<stdio.h>
+   void print_binary(int);
+   int main()
+   {
+   int n;
+   printf("entre n value..\n");
+   scanf("%d",&n);
+  print_binary(n); //n is actual argument
+  return;
+  }
+  
+  void print_binary(int num)  //num is formal argument
+  {
+  int i;            //this fun designed to perform task(print binary)
+  for(i=31;i>=0;i--)
+  printf("%d",num>>i & 1);
+  }
