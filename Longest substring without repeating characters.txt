@@ -1,0 +1,32 @@
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+    char str[100];
+    scanf("%s",&str);
+    int count=0,maxlen=0;
+    int cnt[256]={0};
+    for(int i=0;str[i]!='\0';i++)
+    {
+        count = 0;
+        memset(cnt, 0, sizeof(cnt)); 
+        for(int j=i;str[j]!='\0';j++)
+        {
+            if(cnt[str[j]]==0)
+            {
+                cnt[str[j]]++;
+                count++;
+                
+            }
+            else
+            {
+                break;
+            }
+        }
+        if (count>maxlen)
+        {
+            maxlen=count;
+        }
+    }
+    printf("%d",maxlen);
+}
