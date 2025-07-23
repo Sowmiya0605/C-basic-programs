@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX 26
+
+int adj[MAX][MAX] = {0}; // adjacency matrix
+int visited[MAX] = {0};
+char result[100], best[100];
+int found = 0;
+int uniqueCharCount;
+
+void dfs(int level, int total, char* path, int curr) {
+    path[level] = curr + 'a';
+    visited[curr] = 1;
+
+    if (level == total - 1) {
+        // Check if first and last are adjacent
+        if (adj[path[0] - 'a'][path[total - 1] - 'a']) {
+            path[total] = '\0';
+            if (!found || strcmp(path, best) < 0) {
+                strcpy(best, path);
+                found = 1;
+            }
+        }
+        visited[curr] = 0;
+        return;
+    }
+
+    for (int i = 0; i < MAX; i++) {
+        if (adj[curr][i] && !visited[i]) {
+            dfs(level + 1, total, path, i);
+        }
+    }
+
+    visited[curr] = 0;
+}
+
+int main() {
+    int input1;
+    char input2[100];
+    scanf("%d", &input1);
+    scanf("%s", input2);
+
+    int n = strlen(input2);
+    int unique[26] = {0};
+    char nodes[26];
+    int count = 0;
+
+    // Build adjacency graph and collect unique characters
+    for (int i = 0; i < n - 1; i++) {
+        int u = input2[i] - 'a';
+        int v = input2[i + 1] - 'a';
+        adj[u][v] = adj[v][u] = 1;
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (!unique[input2[i] - 'a']) {
+            unique[input2[i] - 'a'] = 1;
+            nodes[count++] = input2[i];
+        }
+    }
+
+    if (count != input1) {
+        printf("No\n");
+        return 0;
+    }
+
+    uniqueCharCount = input1;
+
+    char path[100];
+    for (int i = 0; i < count; i++) {
+        memset(visited, 0, sizeof(visited));
+        dfs(0, input1, path, nodes[i] - 'a');
+    }
+
+    if (found)
+        printf("%s\n", best);
+    else
+        printf("No\n");
+
+    return 0;
+}
